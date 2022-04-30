@@ -48,7 +48,7 @@ rounding_radius = 2;
 // Number of card rails
 num_card_rails = 1;
 
-// Depth (y) of the card rail, excluding margins
+// Depth (y) of the card rail, excluding margins (outer margins are used)
 card_rail_depth = 5;
 
 // Height (x) of the card rail groove
@@ -126,23 +126,44 @@ module tray () {
 
 // Rail for holding cards
 module card_rail () {
-    color ([1, 0, 0]) {
-        // Buffer to fill in rounded corners of tray
-        translate([0, (depth / 2) - (outer_margin / 2), 0]) {
-            cuboid([width, outer_margin, height], align=ALIGN_POS);
+
+    module rail () {
+        color ([1, 0, 0]) {
+            // Buffer to fill in rounded corners of tray
+            translate([0, (depth / 2) - (outer_margin / 2), 0]) {
+                cuboid([width, outer_margin, height], align=ALIGN_POS);
+            }
+        }
+
+        color ([0, 0, 1]) {
+            translate([0, (depth / 2) + (card_rail_depth / 2), 0]) {
+                rounded_prismoid(
+                    size1=[width, card_rail_depth + (outer_margin * 2)],
+                    size2=[width, card_rail_depth + (outer_margin * 2)],
+                    h=height,
+                    r=rounding_radius
+                );
+            }
         }
     }
 
-    // color ([0, 0, 1]) {
-    //     translate([0, (depth / 2) + outer_margin + (card_rail_depth / 2), 0]) {
-    //         rounded_prismoid(
-    //             size1=[width, card_rail_depth + outer_margin],
-    //             size2=[width, card_rail_depth + outer_margin],
-    //             h=height,
-    //             r=rounding_radius
-    //         );
-    //     }
-    // }
+    module rail_groove () {
+        color ([0, 1, 0]) {
+            translate([0, (depth / 2) + (card_rail_depth / 2), height - card_rail_groove_height]) {
+                cuboid([
+                    width - (outer_margin * 2),
+                    card_rail_groove_depth,
+                    card_rail_groove_height
+                ],
+                align=ALIGN_POS);
+            }
+        }
+    }
+
+    difference () {
+        rail();
+        rail_groove();
+    }
 }
 
 tray();
