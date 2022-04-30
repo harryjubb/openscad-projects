@@ -42,10 +42,6 @@ well_depth = (
     (between_margin * (num_rows - 1))
 ) / num_rows;
 
-// Coherence checks
-
-// Ensure the base is at least 1mm
-assert((height - well_height) >= 1, "Base must be at least 1mm");
 
 module main_tray () {
     rounded_prismoid(
@@ -58,10 +54,6 @@ module main_tray () {
 
 module well () {
     translate ([
-        // -(well_width / 2) - (width / num_rows),
-        // -(well_depth / 2) - (depth / num_cols),
-        // 0,
-        // 0,
         (well_width / 2) - (width / 2),
         (well_depth / 2) - (depth / 2),
         height - well_height
@@ -78,13 +70,8 @@ module well () {
 difference () {
     main_tray();
 
-    // well();
-
-    for (i = [0 : num_rows - 1]) {
-        for (j = [0 : num_cols - 1]) {
-
-            echo(i);
-            echo(j);
+    for (i = [0 : num_cols - 1]) {
+        for (j = [0 : num_rows - 1]) {
             translate_x = (
                 outer_margin +
                 (i * between_margin) + 
