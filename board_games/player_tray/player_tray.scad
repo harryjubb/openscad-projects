@@ -46,7 +46,7 @@ rounding_radius = 2;
 // Card rail
 
 // Number of card rails
-num_card_rails = 1;
+num_card_rails = 2;
 
 // Depth (y) of the card rail, excluding margins (outer margins are used)
 card_rail_depth = 5;
@@ -169,5 +169,13 @@ module card_rail () {
 tray();
 
 if (num_card_rails) {
-    card_rail();
+    for (i = [0 : num_card_rails - 1]) {
+        translate([
+            0,
+            i * (card_rail_depth + outer_margin),
+            0
+        ]) {
+            card_rail();
+        }
+    }
 }
