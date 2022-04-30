@@ -62,7 +62,7 @@ name = "Your name here";
 
 nameplate_depth = 15;
 
-nameplate_lower_height = 2;
+nameplate_lower_height = 1;
 
 // Curve rounding resolution
 $fn = 24;
@@ -190,45 +190,57 @@ module nameplate () {
     }
 
     // Nameplate
+    module plate () {
+        translate([
+            0,
+            0,
+            // depth,
+            // (num_card_rails * card_rail_depth) +
+            // (num_card_rails * outer_margin),
+            0,
+        ]) {
+            rounded_prismoid(
+                size1=[width, nameplate_depth],
+                size2=[width, 0],
+                h=height,
+                r=rounding_radius,
+                shift=[0, -(nameplate_depth / 2)]
+            );
+
+            rounded_prismoid(
+                size1=[width, nameplate_depth],
+                size2=[width, nameplate_depth],
+                h=nameplate_lower_height,
+                r=rounding_radius
+            );
+        }
+    }
+    
     translate([
         0,
-        0,
-        // depth,
-        // (num_card_rails * card_rail_depth) +
-        // (num_card_rails * outer_margin),
-        0,
+        (depth / 2) +
+        (nameplate_depth / 2) +
+        (num_card_rails * card_rail_depth) +
+        (num_card_rails * outer_margin),
+        0
     ]) {
-        translate([10, 0, 0])
-        rounded_prismoid(
-            size1=[width, nameplate_depth],
-            size2=[width, 0],
-            h=height,
-            r=rounding_radius,
-            shift=[0, -(nameplate_depth / 2)]
-        );
-
-        rounded_prismoid(
-            size1=[width, nameplate_depth],
-            size2=[width, nameplate_depth],
-            h=nameplate_lower_height,
-            r=rounding_radius
-        );
+        plate();
     }
 }
 
-// tray();
+tray();
 
-// if (num_card_rails) {
-//     for (i = [0 : num_card_rails - 1]) {
-//         translate([
-//             0,
-//             i * (card_rail_depth + outer_margin),
-//             0
-//         ]) {
-//             card_rail();
-//         }
-//     }
-// }
+if (num_card_rails) {
+    for (i = [0 : num_card_rails - 1]) {
+        translate([
+            0,
+            i * (card_rail_depth + outer_margin),
+            0
+        ]) {
+            card_rail();
+        }
+    }
+}
 
 if (len(name)) {
     nameplate();
