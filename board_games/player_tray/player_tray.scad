@@ -10,24 +10,40 @@ use <BOSL/shapes.scad>
 
 // Tray size
 
+// Width (x) of the tray
 width = 100;
+
+// Depth (y) of the tray
 depth = 100;
+
+// Height (z) of the tray
 height = 5;
+
+// Height (z) of the wells (compartments) inside the tray
 well_height = 3;
 
 // Compartments
 
+// Number of rows of wells
 num_rows = 2;
+
+// Number of columns of wells
 num_cols = 2;
 
 // Margins
 
+// Outer edge margin around wells
 outer_margin = 2;
+
+// Inner margin between wells
 between_margin = 2;
 
 // Rounded corners
 
+// Radius of rounded corners
 rounding_radius = 2;
+
+// Curve rounding resolution
 $fn = 24;
 
 well_width = (
