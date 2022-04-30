@@ -11,10 +11,10 @@ use <BOSL/shapes.scad>
 // Tray size
 
 // Width (x) of the tray
-width = 100;
+width = 150;
 
 // Depth (y) of the tray
-depth = 100;
+depth = 70;
 
 // Height (z) of the tray
 height = 5;
@@ -25,10 +25,10 @@ well_height = 3;
 // Compartments
 
 // Number of rows of wells
-num_rows = 2;
+num_rows = 1;
 
 // Number of columns of wells
-num_cols = 2;
+num_cols = 3;
 
 // Margins
 
