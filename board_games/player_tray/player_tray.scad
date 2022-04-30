@@ -10,13 +10,13 @@ use <BOSL/shapes.scad>
 
 // Tray size
 
-// Width (x) of the tray
+// Width (x) of the tray (excluding extras)
 width = 150;
 
-// Depth (y) of the tray
+// Depth (y) of the tray (excluding extras)
 depth = 70;
 
-// Height (z) of the tray
+// Height (z) of the tray (excluding extras)
 height = 7;
 
 // Height (z) of the wells (compartments) inside the tray
@@ -56,6 +56,13 @@ card_rail_groove_height = 5;
 
 // Depth (y) of the card rail groove
 card_rail_groove_depth = 1;
+
+// Nameplate name: leave empty to remove
+name = "Your name here";
+
+nameplate_depth = 15;
+
+nameplate_lower_height = 2;
 
 // Curve rounding resolution
 $fn = 24;
@@ -124,16 +131,20 @@ module tray () {
 
 }
 
+module outer_margin_buffer () {
+    color ([1, 0, 0]) {
+        // Buffer to fill in rounded corners of tray
+        translate([0, (depth / 2) - (outer_margin / 2), 0]) {
+            cuboid([width, outer_margin, height], align=ALIGN_POS);
+        }
+    }
+}
+
 // Rail for holding cards
 module card_rail () {
 
     module rail () {
-        color ([1, 0, 0]) {
-            // Buffer to fill in rounded corners of tray
-            translate([0, (depth / 2) - (outer_margin / 2), 0]) {
-                cuboid([width, outer_margin, height], align=ALIGN_POS);
-            }
-        }
+        outer_margin_buffer();
 
         color ([0, 0, 1]) {
             translate([0, (depth / 2) + (card_rail_depth / 2), 0]) {
@@ -166,16 +177,59 @@ module card_rail () {
     }
 }
 
-tray();
-
-if (num_card_rails) {
-    for (i = [0 : num_card_rails - 1]) {
-        translate([
-            0,
-            i * (card_rail_depth + outer_margin),
-            0
-        ]) {
-            card_rail();
-        }
+// Nameplate for your name
+module nameplate () {
+    // Buffer to straighten rounded corners
+    translate([
+        0,
+        (num_card_rails * card_rail_depth) +
+        (num_card_rails * outer_margin),
+        0,
+    ]) {
+        outer_margin_buffer();
     }
+
+    // Nameplate
+    translate([
+        0,
+        0,
+        // depth,
+        // (num_card_rails * card_rail_depth) +
+        // (num_card_rails * outer_margin),
+        0,
+    ]) {
+        translate([10, 0, 0])
+        rounded_prismoid(
+            size1=[width, nameplate_depth],
+            size2=[width, 0],
+            h=height,
+            r=rounding_radius,
+            shift=[0, -(nameplate_depth / 2)]
+        );
+
+        rounded_prismoid(
+            size1=[width, nameplate_depth],
+            size2=[width, nameplate_depth],
+            h=nameplate_lower_height,
+            r=rounding_radius
+        );
+    }
+}
+
+// tray();
+
+// if (num_card_rails) {
+//     for (i = [0 : num_card_rails - 1]) {
+//         translate([
+//             0,
+//             i * (card_rail_depth + outer_margin),
+//             0
+//         ]) {
+//             card_rail();
+//         }
+//     }
+// }
+
+if (len(name)) {
+    nameplate();
 }
