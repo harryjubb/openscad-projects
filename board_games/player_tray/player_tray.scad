@@ -6,6 +6,12 @@
 include <BOSL/constants.scad>
 use <BOSL/shapes.scad>
 
+use <../../fonts/Fira_Code/static/FiraCode-Bold.ttf>
+use <../../fonts/Fira_Sans_Condensed/FiraSansCondensed-Black.ttf>
+use <../../fonts/Permanent_Marker/PermanentMarker-Regular.ttf>
+use <../../fonts/Press_Start_2P/PressStart2P-Regular.ttf>
+use <../../fonts/Rock_Salt/RockSalt-Regular.ttf>
+
 // Parameters
 
 // Tray size
@@ -66,11 +72,17 @@ nameplate_depth = 15;
 // Height of the name text on the nameplate
 name_height = 1;
 
+// Font to use for the name text
+name_font = "Liberation Sans"; // [Liberation Sans, "Fira Sans Condensed:style=Black", "Fira Code:style=Bold", "Permanent Marker:style=Regular", "Press Start 2P:style=Regular", "Rock Salt:style=Regular"]
+
 // Font size of the name
 name_font_size = 7;
 
 // Vertical alignment of the name
 name_valign = "baseline"; // [top, bottom, center, baseline]
+
+// Manual adjustment of vertical name placement (y axis)
+name_adjust = 0;
 
 // Curve rounding resolution
 $fn = 24;
@@ -227,8 +239,8 @@ module nameplate () {
                     -(depth / 2) -
                     (num_card_rails * card_rail_depth) -
                     (num_card_rails * outer_margin) -
-                    // (outer_margin / 2) -
-                    nameplate_depth / 2,
+                    nameplate_depth / 2 -
+                    name_adjust,
                     height
                 ]) {
                     linear_extrude(name_height) {
@@ -236,7 +248,8 @@ module nameplate () {
                             name,
                             halign="center",
                             valign="baseline",
-                            size=name_font_size
+                            size=name_font_size,
+                            font=name_font
                         );
                     }
                 }
