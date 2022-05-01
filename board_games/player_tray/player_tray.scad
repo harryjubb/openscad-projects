@@ -60,7 +60,17 @@ card_rail_groove_depth = 1;
 // Nameplate name: leave empty to remove nameplate
 name = "Your name here";
 
+// Depth (y) of the nameplate
 nameplate_depth = 15;
+
+// Height of the name text on the nameplate
+name_height = 1;
+
+// Font size of the name
+name_font_size = 7;
+
+// Vertical alignment of the name
+name_valign = "baseline"; // [top, bottom, center, baseline]
 
 // Curve rounding resolution
 $fn = 24;
@@ -208,6 +218,33 @@ module nameplate () {
     ]) {
         plate();
     }
+
+    module name () {
+        color([0.5, 0, 0.5]) {
+            rotate([0, 0, 180]) {
+                translate([
+                    0,
+                    -(depth / 2) -
+                    (num_card_rails * card_rail_depth) -
+                    (num_card_rails * outer_margin) -
+                    // (outer_margin / 2) -
+                    nameplate_depth / 2,
+                    height
+                ]) {
+                    linear_extrude(name_height) {
+                        text(
+                            name,
+                            halign="center",
+                            valign="baseline",
+                            size=name_font_size
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    name ();
 }
 
 module main () {
