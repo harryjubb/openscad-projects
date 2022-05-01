@@ -57,12 +57,10 @@ card_rail_groove_height = 5;
 // Depth (y) of the card rail groove
 card_rail_groove_depth = 1;
 
-// Nameplate name: leave empty to remove
+// Nameplate name: leave empty to remove nameplate
 name = "Your name here";
 
 nameplate_depth = 15;
-
-nameplate_lower_height = 1;
 
 // Curve rounding resolution
 $fn = 24;
@@ -191,29 +189,12 @@ module nameplate () {
 
     // Nameplate
     module plate () {
-        translate([
-            0,
-            0,
-            // depth,
-            // (num_card_rails * card_rail_depth) +
-            // (num_card_rails * outer_margin),
-            0,
-        ]) {
-            rounded_prismoid(
-                size1=[width, nameplate_depth],
-                size2=[width, 0],
-                h=height,
-                r=rounding_radius,
-                shift=[0, -(nameplate_depth / 2)]
-            );
-
-            rounded_prismoid(
-                size1=[width, nameplate_depth],
-                size2=[width, nameplate_depth],
-                h=nameplate_lower_height,
-                r=rounding_radius
-            );
-        }
+        rounded_prismoid(
+            size1=[width, nameplate_depth],
+            size2=[width, nameplate_depth],
+            h=height,
+            r=rounding_radius
+        );
     }
     
     translate([
@@ -221,27 +202,32 @@ module nameplate () {
         (depth / 2) +
         (nameplate_depth / 2) +
         (num_card_rails * card_rail_depth) +
-        (num_card_rails * outer_margin),
+        (num_card_rails * outer_margin) -
+        outer_margin,
         0
     ]) {
         plate();
     }
 }
 
-tray();
+module main () {
+    tray();
 
-if (num_card_rails) {
-    for (i = [0 : num_card_rails - 1]) {
-        translate([
-            0,
-            i * (card_rail_depth + outer_margin),
-            0
-        ]) {
-            card_rail();
+    if (num_card_rails) {
+        for (i = [0 : num_card_rails - 1]) {
+            translate([
+                0,
+                i * (card_rail_depth + outer_margin),
+                0
+            ]) {
+                card_rail();
+            }
         }
+    }
+
+    if (len(name)) {
+        nameplate();
     }
 }
 
-if (len(name)) {
-    nameplate();
-}
+main();
