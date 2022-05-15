@@ -11,6 +11,7 @@ use <../../fonts/Fira_Sans_Condensed/FiraSansCondensed-Black.ttf>
 use <../../fonts/Permanent_Marker/PermanentMarker-Regular.ttf>
 use <../../fonts/Press_Start_2P/PressStart2P-Regular.ttf>
 use <../../fonts/Rock_Salt/RockSalt-Regular.ttf>
+use <../../fonts/Orbitron/static/Orbitron-Bold.ttf>
 
 // Parameters
 
@@ -73,7 +74,7 @@ nameplate_depth = 15;
 name_height = 1;
 
 // Font to use for the name text
-name_font = "Liberation Sans"; // [Liberation Sans, "Fira Sans Condensed:style=Black", "Fira Code:style=Bold", "Permanent Marker:style=Regular", "Press Start 2P:style=Regular", "Rock Salt:style=Regular"]
+name_font = "Liberation Sans"; // [Liberation Sans, "Fira Sans Condensed:style=Black", "Fira Code:style=Bold", "Permanent Marker:style=Regular", "Press Start 2P:style=Regular", "Rock Salt:style=Regular", "Orbitron:style=Bold"]
 
 // Font size of the name
 name_font_size = 7;
